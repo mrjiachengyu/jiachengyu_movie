@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiachengyu.mapper.MovieMapper">
+	<select id="getlist" resultType="map">
+		SELECT a.*,b.tname FROM jc_movie a LEFT JOIN jc_type b ON a.tid=b.tid 
+		<where>
+		<if test="mname!=''">
+			and a.mname like'%${mname}%'
+		</if>
+		<if test="startdatea!=''&amp;enddatea!=''">
+			and a.sydatea between #{startdatea} and #{enddatea}
+		</if>
+		<if test="author!=''">
+			and a.author like'%${author}%'
+		</if>
+		<if test="startprice!=0&amp;endprice!=0">
+			and a.price between ${startprice} and ${endprice}
+		</if>
+		<if test="years!=0">
+			and a.years =${years}
+		</if>
+		<if test="starthours!=0&amp;endhours!=0">
+			and a.hours between ${starthours} and ${endhours}
+		</if>
+		</where>
+		ORDER BY 
+		<if test="flag==1">
+		price ${m1}
+		</if>
+		<if test="flag==2">
+		sydatea ${m2}
+		</if>
+		<if test="flag==3">
+		hours ${m3}
+		</if>
+	</select>
+	<delete id="del">
+		delete from jc_movie where mid in(${mid})
+	</delete>
+	<update id="xj">
+		update jc_movie set struts=0 where mid=${mid}
+	</update>
+	<update id="sj">
+		update jc_movie set struts=2 where mid=${mid}
+	</update>
+</mapper>
